@@ -115,7 +115,6 @@ def cmd_email():
     print(f'Daily Bitcoin Account Balance: {bitcoin_account_balance:.2f} USDT')
     print(f'Daily Bitcoin Account Balance: AU${bitcoin_account_balance_aud:.2f}')
 
-
     #### Account balance for US Stock ##########
     body1 = f'US Stock Balance: US${us_stock_balance:.2f}'
     body2 = f'US Stock Balance: AU${us_stock_balance_aud:.2f}'
