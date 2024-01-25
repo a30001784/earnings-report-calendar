@@ -14,7 +14,7 @@ Globals:
   Api:
     TracingEnabled: true
 Resources:
-  S3CreationFunction:
+  S3BUCKET:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: s3_bucket/
@@ -56,9 +56,9 @@ Outputs:
   # S3CreationApi:
   #   Description: API Gateway endpoint URL for Prod stage for Bitcoin Account Balance function
   #   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/account/"
-  S3CreationFunction:
+  S3BUCKETFunction:
     Description: AWS S3 bucket creation Lambda Function ARN
     Value: !GetAtt S3CreationFunction.Arn
-  S3CreationFunctionIamRole:
+  S3BUCKETFunctionIamRole:
     Description: Implicit IAM Role created for Creating S3 bucket function
     Value: !GetAtt S3CreationFunctionRole.Arn

@@ -117,12 +117,7 @@ def cmd():
             else:
                 print(f"Failed to create subfolder '{folder}'")
 
-def main():
+def lambda_handler(event, context):
     cmd()
-
-
-
-if __name__ == "__main__":
-    main()
 
 
