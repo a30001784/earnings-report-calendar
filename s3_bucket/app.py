@@ -1,26 +1,30 @@
-import requests
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from forex_python.converter import CurrencyRates
-from requests_html import HTMLSession
-from bs4 import BeautifulSoup as bs
-
 import boto3
 from botocore.exceptions import ClientError
 
 
 # Initialization
-
-bucket_name = 'predawnsuper/tech'  # Replace with your bucket name
+# access_key = 'AKIAJ6F5URPXMRHJQZ4A'
+# secret_key = 'jE3Mj4I/Z84wO3uusFkg1iK1ISUVoYqH6DrBZlA7'
+bucket_name = 'sam-s3-bucket-2024'  # Replace with your bucket name
+subfolders = ['predawn-raw-s3', 'predawn-curated-s3', 'predawn-serve-s3']  # List of bucket names to create
 region = 'ap-southeast-2'  # Replace with your desired region
-create_bucket(bucket_name, region)
 
+def check_bucket_exists(bucket_name):
+    s3_client = boto3.client('s3')
+    try:
+        response = s3_client.list_buckets()
+        for bucket in response['Buckets']:
+            if bucket["Name"] == bucket_name:
+                return True
+        return False
+    except ClientError as e:
+        print(f"An error occurred: {e}")
+        return False
 
 def create_bucket(bucket_name, region=None):
     try:
+        s3_client = boto3.client('s3')
         if region is None:
-            s3_client = boto3.client('s3')
             s3_client.create_bucket(Bucket=bucket_name)
         else:
             s3_client = boto3.client('s3', region_name=region)
@@ -31,7 +35,27 @@ def create_bucket(bucket_name, region=None):
         return False
     return True
 
+def check_subfolder_exists(bucket_name, subfolder_name):
+    s3_client = boto3.client('s3')
+    try:
+        # Ensure the subfolder name ends with a '/'
+        if not subfolder_name.endswith('/'):
+            subfolder_name += '/'
 
+        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=subfolder_name)
+        return 'Contents' in response
+    except ClientError as e:
+        print(f"An error occurred: {e}")
+        return False
+
+def create_subfolder(bucket_name, subfolder_name):
+    s3_client = boto3.client('s3')
+    try:
+        s3_client.put_object(Bucket=bucket_name, Key=(subfolder_name + '/'))
+        return True
+    except ClientError as e:
+        print(f"Error creating subfolder: {e}")
+        return False
 
 def send_email(subject, body):
     from_email = '156709406@qq.com'
@@ -70,14 +94,33 @@ def send_email(subject, body):
         # If there's an error, return the error message
         return str(e)
 
+def cmd():
+    # Create s3 bucket
+    res = check_bucket_exists(bucket_name)
+    if res:
+        print(f"'{bucket_name}' s3 bucket already exists")
+        pass
+    else:
+        create_bucket(bucket_name, region)
+        print(f"Bucket '{bucket_name}' created successfully.")
 
+    # Create subfolders
+    for folder in subfolders:
+        if check_subfolder_exists(bucket_name, folder):
+            print(f"'{folder}' folder already exists in the '{bucket_name} bucket'")
+            pass
+        else:
+            if create_subfolder(bucket_name, folder):
+                print(f"Subfolder '{folder}' created successfully.")
+            else:
+                print(f"Failed to create subfolder '{folder}'")
 
 def main():
-    cmd_email()
+    cmd()
+
 
 
 if __name__ == "__main__":
     main()
-
 
 

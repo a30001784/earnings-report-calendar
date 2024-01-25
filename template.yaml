@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  sam-account-balance
+  sam-s3-bucket
 
-  Sample SAM Template for sam-account-balance 
+  Sample SAM Template for sam-s3-bucket
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -17,7 +17,7 @@ Resources:
   BitcoinBalanceFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: account_balance/
+      CodeUri: s3_bucket/
       Handler: app.lambda_handler
       Runtime: python3.9
       Architectures:
