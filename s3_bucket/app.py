@@ -118,7 +118,7 @@ def cmd():
                 print(f"Failed to create subfolder '{folder}'")
 
 def main():
-    # cmd()
+    cmd()
 
 
 
