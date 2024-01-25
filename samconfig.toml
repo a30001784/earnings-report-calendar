@@ -4,7 +4,7 @@ version = 0.1
 
 [default]
 [default.global.parameters]
-stack_name = "sam-account-balance"
+stack_name = "sam-s3-bucket"
 
 [default.build.parameters]
 cached = true
