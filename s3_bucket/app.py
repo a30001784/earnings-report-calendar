@@ -7,10 +7,12 @@ from botocore.exceptions import ClientError
 # secret_key = 'jE3Mj4I/Z84wO3uusFkg1iK1ISUVoYqH6DrBZlA7'
 bucket_name = 'sam-s3-bucket-2024'  # Replace with your bucket name
 subfolders = ['predawn-raw-s3', 'predawn-curated-s3', 'predawn-serve-s3']  # List of bucket names to create
+access_key = 'AKIA2HHAGSCLDKHZH7YG'
+secret_key = 'qwWCLnrl0te80HnV5uAh7DKlRbQURvVTgt+CV1qw'
 region = 'ap-southeast-2'  # Replace with your desired region
 
 def check_bucket_exists(bucket_name):
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', aws_access_key_id=access_key,aws_secret_access_key=secret_key)
     try:
         response = s3_client.list_buckets()
         for bucket in response['Buckets']:
@@ -23,7 +25,7 @@ def check_bucket_exists(bucket_name):
 
 def create_bucket(bucket_name, region=None):
     try:
-        s3_client = boto3.client('s3')
+        s3_client = boto3.client('s3', aws_access_key_id=access_key,aws_secret_access_key=secret_key)
         if region is None:
             s3_client.create_bucket(Bucket=bucket_name)
         else:
@@ -36,7 +38,7 @@ def create_bucket(bucket_name, region=None):
     return True
 
 def check_subfolder_exists(bucket_name, subfolder_name):
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', aws_access_key_id=access_key,aws_secret_access_key=secret_key)
     try:
         # Ensure the subfolder name ends with a '/'
         if not subfolder_name.endswith('/'):
@@ -49,7 +51,7 @@ def check_subfolder_exists(bucket_name, subfolder_name):
         return False
 
 def create_subfolder(bucket_name, subfolder_name):
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', aws_access_key_id=access_key,aws_secret_access_key=secret_key)
     try:
         s3_client.put_object(Bucket=bucket_name, Key=(subfolder_name + '/'))
         return True
