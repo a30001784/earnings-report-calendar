@@ -34,7 +34,7 @@ Resources:
             Schedule: 'rate(1 day)'
             Name: TestSamSchedule
             Description: test schedule of sam lambda
-            State: ENABLED
+            State: DISABLED
 
 
   ApplicationResourceGroup:
