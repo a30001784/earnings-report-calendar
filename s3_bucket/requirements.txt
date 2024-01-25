@@ -1,4 +1,1 @@
-requests
-forex-python
-requests_html
-bs4
+boto3
