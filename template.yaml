@@ -58,8 +58,8 @@ Outputs:
   #   Description: API Gateway endpoint URL for Prod stage for Bitcoin Account Balance function
   #   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/account/"
   BitcoinBalanceFunction:
-    Description: Bitcoin Account Balance Lambda Function ARN
-    Value: !GetAtt BitcoinBalanceFunction.Arn
+    Description: AWS S3 bucket creation Lambda Function ARN
+    Value: !GetAtt S3CreationFunction.Arn
   BitcoinBalanceFunctionIamRole:
-    Description: Implicit IAM Role created for Bitcoin Account Balance function
-    Value: !GetAtt BitcoinBalanceFunctionRole.Arn
+    Description: Implicit IAM Role created for Creating S3 bucket function
+    Value: !GetAtt S3CreationFunctionRole.Arn
