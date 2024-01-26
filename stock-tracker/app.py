@@ -25,7 +25,7 @@ end = datetime.today().strftime('%Y-%m-%d')
 qq_password = 'esdrnpzdsscbcajj'
 timestr = time.strftime("%Y-%m-%d")
 finantial_ratio_file_name = "finantial_ratio_" + timestr + ".csv"
-namelist = ['berkshire','car','chip']
+namelist = ['chip']
 
 
 metric = ['P/B',
