@@ -31,7 +31,7 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: 'rate(1 week)'
-            Name: portfoliotrackerschedule
+            Name: trackerschedule
             Description: trigger portfolio tracker lambda function on a weekly basis
             State: ENABLED
 
