@@ -30,8 +30,8 @@ Resources:
         CWSchedule:
           Type: Schedule
           Properties:
-            Schedule: 'rate(1 week)'
-            Name: trackerschedule
+            Schedule: 'rate(7 days)'
+            Name: stock-tracker-schedule
             Description: trigger portfolio tracker lambda function on a weekly basis
             State: ENABLED
 
