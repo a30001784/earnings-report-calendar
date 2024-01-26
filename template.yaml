@@ -14,7 +14,7 @@ Globals:
   Api:
     TracingEnabled: true
 Resources:
-  S3BUCKET:
+  S3BUCKETFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: s3_bucket/
