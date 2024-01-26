@@ -69,6 +69,8 @@ def get_fundamental_data(df):
                 df.loc[symbol,m] = fundamental_metric(soup,m)
         except Exception as e:
             print (symbol, 'not found')
+    print("Fundamental data has been successfully downloaded!")
+    print(df)
     return df
 
 def create_financial_ratio(stocklist, col=metric):
