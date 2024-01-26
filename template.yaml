@@ -22,18 +22,18 @@ Resources:
       Runtime: python3.9
       Architectures:
       - x86_64
-      Events:
-      #     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+      # Events:
+      # #     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+      # #     Properties:
+      # #       Path: /account
+      # #       Method: get
+      #   CWSchedule:
+      #     Type: Schedule
       #     Properties:
-      #       Path: /account
-      #       Method: get
-        CWSchedule:
-          Type: Schedule
-          Properties:
-            Schedule: 'rate(1 day)'
-            Name: TestSamSchedule
-            Description: test schedule of sam lambda
-            State: DISABLED
+      #       Schedule: 'rate(1 day)'
+      #       Name: TestSamSchedule
+      #       Description: test schedule of sam lambda
+      #       State: DISABLED
 
 
   ApplicationResourceGroup:
