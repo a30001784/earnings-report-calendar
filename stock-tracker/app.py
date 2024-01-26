@@ -172,7 +172,8 @@ def cmd():
         print(temp_portfolio_name)
         data = create_financial_ratio(temp_portfolio_name)
         finantial_ratio_file_name = str(namelist[j]) + timestr + ".csv"
-        data.to_csv(finantial_ratio_file_name, index=True, header=True)
+        file_path = '/tmp/' + finantial_ratio_file_name
+        data.to_csv(file_path, index=True, header=True)
         print("{} has been saved successfully.".format(finantial_ratio_file_name))
         # financial_file = get_financial_ratio(finantial_ratio_file_name)
         # send_mail(financial_file, str(namelist[j]))
