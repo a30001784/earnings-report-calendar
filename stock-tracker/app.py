@@ -128,32 +128,32 @@ def get_financial_ratio(f=finantial_ratio_file_name):
     return html
 
 
-# def send_mail(body, portfolio_name):
-#     message = MIMEMultipart()
-#     # message['Subject'] = 'Daily Price Change of My Stock List!'
-#     message['Subject'] = 'Daily Fundamental Data of ' + portfolio_name.upper()  + ' Portfolio !'
-#     message['From'] = '156709406@qq.com'
-#     message['To'] = '156709406@qq.com'
+def send_mail(body, portfolio_name):
+    message = MIMEMultipart()
+    # message['Subject'] = 'Daily Price Change of My Stock List!'
+    message['Subject'] = 'Daily Fundamental Data of ' + portfolio_name.upper()  + ' Portfolio !'
+    message['From'] = '156709406@qq.com'
+    message['To'] = '156709406@qq.com'
 
-#     body_content = body
-#     message.attach(MIMEText(body_content, "html"))
-#     msg_body = message.as_string()
+    body_content = body
+    message.attach(MIMEText(body_content, "html"))
+    msg_body = message.as_string()
 
-#     server = SMTP('smtp.qq.com', 587)
-#     server.starttls()
-#     print('Get connected to qq!')
+    server = SMTP('smtp.qq.com', 587)
+    server.starttls()
+    print('Get connected to qq!')
 
 
-#     time.sleep(10)
-#     print('Wait for 10 sec before login to mail server!')
-#     server.login(message['From'], qq_password)
-#     print('Successfully log in to qq!')
+    time.sleep(10)
+    print('Wait for 10 sec before login to mail server!')
+    server.login(message['From'], qq_password)
+    print('Successfully log in to qq!')
 
-#     time.sleep(10)
-#     print('Wait for 10 sec before sending the email!')
-#     server.sendmail(message['From'], message['To'], msg_body)
-#     server.quit()
-#     print('Email has been sent!')
+    time.sleep(10)
+    print('Wait for 10 sec before sending the email!')
+    server.sendmail(message['From'], message['To'], msg_body)
+    server.quit()
+    print('Email has been sent!')
 
 # def cmd():
 #     for i in range(len(namelist)):
@@ -176,8 +176,8 @@ def cmd():
         print("Value of file_path: " , file_path)
         data.to_csv(file_path, index=True, header=True)
         print("{} has been saved successfully.".format(finantial_ratio_file_name))
-        # financial_file = get_financial_ratio(finantial_ratio_file_name)
-        # send_mail(financial_file, str(namelist[j]))
+        financial_file = get_financial_ratio(finantial_ratio_file_name)
+        send_mail(financial_file, str(namelist[j]))
 
 def lambda_handler(event, context):
     cmd()
