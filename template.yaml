@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  sam-s3-bucket
+  industry-portfolio-tracker
 
-  Sample SAM Template for sam-s3-bucket
+  Sample SAM Template for industry-portfolio-tracker
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -14,26 +14,26 @@ Globals:
   Api:
     TracingEnabled: true
 Resources:
-  S3BUCKETFunction:
+  portfolio_tracker:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: s3_bucket/
+      CodeUri: portfolio_tracker/
       Handler: app.lambda_handler
       Runtime: python3.9
       Architectures:
       - x86_64
-      # Events:
-      # #     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-      # #     Properties:
-      # #       Path: /account
-      # #       Method: get
-      #   CWSchedule:
-      #     Type: Schedule
+      Events:
+      #     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
       #     Properties:
-      #       Schedule: 'rate(1 day)'
-      #       Name: TestSamSchedule
-      #       Description: test schedule of sam lambda
-      #       State: DISABLED
+      #       Path: /account
+      #       Method: get
+        CWSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: 'rate(1 week)'
+            Name: portfolio_tracker_schedule
+            Description: trigger portfolio tracker lambda function on a weekly basis
+            State: ENABLED
 
 
   ApplicationResourceGroup:
@@ -56,9 +56,9 @@ Outputs:
   # S3CreationApi:
   #   Description: API Gateway endpoint URL for Prod stage for Bitcoin Account Balance function
   #   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/account/"
-  S3BUCKETFunction:
+  portfolio_trackerFunction:
     Description: AWS S3 bucket creation Lambda Function ARN
-    Value: !GetAtt S3BUCKETFunction.Arn
-  S3BUCKETFunctionIamRole:
+    Value: !GetAtt portfolio_trackerFunction.Arn
+  portfolio_trackerIamRole:
     Description: Implicit IAM Role created for Creating S3 bucket function
-    Value: !GetAtt S3BUCKETFunctionRole.Arn
+    Value: !GetAtt portfolio_trackerFunctionRole.Arn
