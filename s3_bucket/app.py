@@ -3,8 +3,6 @@ from botocore.exceptions import ClientError
 
 
 # Initialization
-# access_key = 'AKIAJ6F5URPXMRHJQZ4A'
-# secret_key = 'jE3Mj4I/Z84wO3uusFkg1iK1ISUVoYqH6DrBZlA7'
 bucket_name = 'sam-s3-bucket-2024'  # Replace with your bucket name
 subfolders = ['predawn-raw-s3', 'predawn-curated-s3', 'predawn-serve-s3']  # List of bucket names to create
 region = 'ap-southeast-2'  # Replace with your desired region
