@@ -14,7 +14,7 @@ Globals:
   Api:
     TracingEnabled: true
 Resources:
-  portfolio_tracker:
+  StockTrackerFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: stock-tracker/
@@ -31,7 +31,7 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: 'rate(1 week)'
-            Name: portfolio_tracker_schedule
+            Name: portfoliotrackerschedule
             Description: trigger portfolio tracker lambda function on a weekly basis
             State: ENABLED
 
@@ -56,9 +56,9 @@ Outputs:
   # S3CreationApi:
   #   Description: API Gateway endpoint URL for Prod stage for Bitcoin Account Balance function
   #   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/account/"
-  portfolio_trackerFunction:
+  StockTrackerFunction:
     Description: AWS S3 bucket creation Lambda Function ARN
-    Value: !GetAtt portfolio_trackerFunction.Arn
-  portfolio_trackerIamRole:
+    Value: !GetAtt StockTrackerFunction.Arn
+  StockTrackerIamRole:
     Description: Implicit IAM Role created for Creating S3 bucket function
-    Value: !GetAtt portfolio_trackerFunctionRole.Arn
+    Value: !GetAtt StockTrackerFunctionRole.Arn
