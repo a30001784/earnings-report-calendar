@@ -1,117 +1,261 @@
-import boto3
-from botocore.exceptions import ClientError
+#!/usr/bin/env python
+# functions to get and parse data from FinViz
+from bs4 import BeautifulSoup as bs
+import requests
+import time
+from requests_html import HTMLSession
+import pandas as pd
+from smtplib import SMTP
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import pandas as pd
+import sys
+from pandas_datareader import data as pdr
+import yfinance as yf
+from datetime import datetime, timedelta, date
+import numpy as np
+import configparser
+
+CONFIG_FILE = './config.ini'
+config = configparser.ConfigParser()
+config.read(CONFIG_FILE)
+start = datetime.now() - timedelta(days=10)
+start.strftime('%Y-%m-%d')
+end = datetime.today().strftime('%Y-%m-%d')
+qq_password = 'esdrnpzdsscbcajj'
+timestr = time.strftime("%Y-%m-%d")
+finantial_ratio_file_name = "finantial_ratio_" + timestr + ".csv"
+namelist = ['berkshire','chnstock', 'bank','car','chip','it','ecom','energy']
 
 
-# Initialization
-bucket_name = 'sam-transcribe-audio-bucket'  # Replace with your bucket name
-subfolders = ['2024/01', '2024/02', '2024/03']  # List of bucket names to create
-region = 'ap-southeast-2'  # Replace with your desired region
+metric = ['P/B',
+'P/E',
+# 'Forward P/E',
+# 'PEG',
+#'Debt/Eq',
+'EPS (ttm)',
+#'Dividend %',
+'ROE',
+'EPS Q/Q',
+'Insider Own',
+'Inst Own',
+'52W Range',
+'Perf Week',
+'Perf Month',
+'Perf Quarter',
+'Perf Half Y',
+'Perf YTD',
+'Price',
+'Market Cap'
+]
 
-def check_bucket_exists(bucket_name):
-    s3_client = boto3.client('s3')
+def fundamental_metric(soup, metric):
+    return soup.find(text = metric).find_next(class_='snapshot-td2').text
+
+def get_company_name(t):
+    symbol = yf.Ticker(t)
+    full_company_name = symbol.info['longName']
+    print('Full name of the company is: ', full_company_name)
+    return full_company_name
+
+def get_fundamental_data(df):
+    for symbol in df.index:
+        try:
+            url = ("http://finviz.com/quote.ashx?t=" + symbol.lower())
+            session = HTMLSession()
+            response = session.get(url)
+            soup =bs(response.content, 'html.parser')
+            for m in df.columns:
+                df.loc[symbol,m] = fundamental_metric(soup,m)
+        except Exception as e:
+            print (symbol, 'not found')
+    return df
+
+
+
+def create_financial_ratio(stocklist, col=metric):
+    df = pd.DataFrame(index=stocklist, columns=col)
+    df = get_fundamental_data(df)
+
+    #df['Dividend %'] = df['Dividend %'].str.replace('%', '')
+    df['ROE'] = df['ROE'].str.replace('%', '')
+    df['EPS Q/Q'] = df['EPS Q/Q'].str.replace('%', '')
+    df['Insider Own'] = df['Insider Own'].str.replace('%', '')
+    df['Inst Own'] = df['Inst Own'].str.replace('%', '')
+    df['Perf Week'] = df['Perf Week'].str.replace('%', '')
+    df['Perf Month'] = df['Perf Month'].str.replace('%', '')
+    df['Perf Quarter'] = df['Perf Quarter'].str.replace('%', '')
+    df['Perf Half Y'] = df['Perf Half Y'].str.replace('%', '')
+    df['Perf YTD'] = df['Perf YTD'].str.replace('%', '')
+    df['Perf YTD'] = df['Perf YTD'].astype(float)
+    df = df.sort_values(by='Perf YTD', ascending=False)
+    print(df)
+    return df
+
+def create_financial_ratio_week(stocklist, col=metric):
+    df = pd.DataFrame(index=stocklist, columns=col)
+    df = get_fundamental_data(df)
+
+    #df['Dividend %'] = df['Dividend %'].str.replace('%', '')
+    df['ROE'] = df['ROE'].str.replace('%', '')
+    df['EPS Q/Q'] = df['EPS Q/Q'].str.replace('%', '')
+    df['Insider Own'] = df['Insider Own'].str.replace('%', '')
+    df['Inst Own'] = df['Inst Own'].str.replace('%', '')
+    df['Perf Week'] = df['Perf Week'].str.replace('%', '')
+    df['Perf Month'] = df['Perf Month'].str.replace('%', '')
+    df['Perf Quarter'] = df['Perf Quarter'].str.replace('%', '')
+    df['Perf Half Y'] = df['Perf Half Y'].str.replace('%', '')
+    df['Perf YTD'] = df['Perf YTD'].str.replace('%', '')
+    df['Perf Week'] = df['Perf Week'].astype(float)
+    df = df.sort_values(by='Perf Week', ascending=False)
+    print(df)
+    return df
+
+def create_financial_ratio_month(stocklist, col=metric):
+    df = pd.DataFrame(index=stocklist, columns=col)
+    df = get_fundamental_data(df)
+    df['ROE'] = df['ROE'].str.replace('%', '')
+    df['EPS Q/Q'] = df['EPS Q/Q'].str.replace('%', '')
+    df['Insider Own'] = df['Insider Own'].str.replace('%', '')
+    df['Inst Own'] = df['Inst Own'].str.replace('%', '')
+    df['Perf Week'] = df['Perf Week'].str.replace('%', '')
+    df['Perf Month'] = df['Perf Month'].str.replace('%', '')
+    df['Perf Quarter'] = df['Perf Quarter'].str.replace('%', '')
+    df['Perf Half Y'] = df['Perf Half Y'].str.replace('%', '')
+    df['Perf YTD'] = df['Perf YTD'].str.replace('%', '')
+    df['Perf Month'] = df['Perf Month'].astype(float)
+    df = df.sort_values(by='Perf Month', ascending=False)
+    print(df)
+    return df
+
+def create_financial_ratio_quarter(stocklist, col=metric):
+    df = pd.DataFrame(index=stocklist, columns=col)
+    df = get_fundamental_data(df)
+    df['ROE'] = df['ROE'].str.replace('%', '')
+    df['EPS Q/Q'] = df['EPS Q/Q'].str.replace('%', '')
+    df['Insider Own'] = df['Insider Own'].str.replace('%', '')
+    df['Inst Own'] = df['Inst Own'].str.replace('%', '')
+    df['Perf Week'] = df['Perf Week'].str.replace('%', '')
+    df['Perf Month'] = df['Perf Month'].str.replace('%', '')
+    df['Perf Quarter'] = df['Perf Quarter'].str.replace('%', '')
+    df['Perf Half Y'] = df['Perf Half Y'].str.replace('%', '')
+    df['Perf YTD'] = df['Perf YTD'].str.replace('%', '')
+    df['Perf Quarter'] = df['Perf Quarter'].astype(float)
+    df = df.sort_values(by='Perf Quarter', ascending=False)
+    print(df)
+    return df
+
+def is_sat():
+    flag = 0
+    if date.today().weekday() == 5:
+        print("Today is another Saturday!")
+        return flag
+    else:
+        flag = 1
+        print("Today is not Saturday!")
+        return flag
+
+def is_first_day_of_month():
+    flag = 0
+    today = datetime.now()
+    if today.day == 1:
+        print("It's the first of the month!")
+        return flag
+    elif today.month == 1:
+        flag = 2
+        print("It's the first of the year!")
+        return flag
+    else: 
+        flag = 1
+        print("Today is not the first of the month!")
+        return flag
+
+def is_first_day_of_quarter():
+    flag = 0
+    today = datetime.now()
+    if today.day == 1 and today.month%3 == 1 :
+        print("It's the first day of this quater!")
+        return flag
+    else: 
+        flag = 1
+        print("Today is not the first day of this quarter!")
+        return flag
+    
+def refactor_dataframe():
+    financial_ratio = create_financial_ratio(stockSymbols)
+    df = financial_ratio
+    print(df['Price'])
+    return df
+
+def get_financial_ratio(f=finantial_ratio_file_name):
+    # data = web.DataReader(stocks, 'yahoo', start, end)[col]
+    # data = pdr.get_data_yahoo(stocks, 'yahoo', start,end)[col]
     try:
-        response = s3_client.list_buckets()
-        for bucket in response['Buckets']:
-            if bucket["Name"] == bucket_name:
-                return True
-        return False
-    except ClientError as e:
-        print(f"An error occurred: {e}")
-        return False
+        data = pd.read_csv(f)
+        print(data.to_string())
+    except:
+        print('did not find data! ')
+    round_data = np.round(data, decimals=2)
+    html = """\
+    <html>
+      <head></head>
+      <body>
+        {0}
+      </body>
+    </html>
+    """.format(round_data.to_html())
+    print(html)
+    return html
 
-def create_bucket(bucket_name, region=None):
-    try:
-        s3_client = boto3.client('s3')
-        if region is None:
-            s3_client.create_bucket(Bucket=bucket_name)
-        else:
-            s3_client = boto3.client('s3', region_name=region)
-            location = {'LocationConstraint': region}
-            s3_client.create_bucket(Bucket=bucket_name, CreateBucketConfiguration=location)
-    except ClientError as e:
-        print(e)
-        return False
-    return True
 
-def check_subfolder_exists(bucket_name, subfolder_name):
-    s3_client = boto3.client('s3')
-    try:
-        # Ensure the subfolder name ends with a '/'
-        if not subfolder_name.endswith('/'):
-            subfolder_name += '/'
-
-        response = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=subfolder_name)
-        return 'Contents' in response
-    except ClientError as e:
-        print(f"An error occurred: {e}")
-        return False
-
-def create_subfolder(bucket_name, subfolder_name):
-    s3_client = boto3.client('s3')
-    try:
-        s3_client.put_object(Bucket=bucket_name, Key=(subfolder_name + '/'))
-        return True
-    except ClientError as e:
-        print(f"Error creating subfolder: {e}")
-        return False
-
-def send_email(subject, body):
-    from_email = '156709406@qq.com'
-    to_email = '156709406@qq.com'
-    smtp_server = 'smtp.qq.com'
-    smtp_port = 587
-    smtp_username = '156709406@qq.com'
-    smtp_password = 'esdrnpzdsscbcajj'
-
+def send_mail(body, portfolio_name):
     message = MIMEMultipart()
-    message['From'] = from_email
-    message['To'] = to_email
-    message['Subject'] = subject
+    # message['Subject'] = 'Daily Price Change of My Stock List!'
+    message['Subject'] = 'Daily Fundamental Data of ' + portfolio_name.upper()  + ' Portfolio !'
+    message['From'] = '156709406@qq.com'
+    message['To'] = '156709406@qq.com'
 
-    # Attach the body of the email
-    message.attach(MIMEText(body, 'plain'))
+    body_content = body
+    message.attach(MIMEText(body_content, "html"))
+    msg_body = message.as_string()
 
-    print(f'Start to send email')
+    server = SMTP('smtp.qq.com', 587)
+    server.starttls()
+    print('Get connected to qq!')
 
-    try:
-        with smtplib.SMTP(smtp_server, smtp_port) as server:
-            # Login to the email server
-            server.starttls()
-            server.login(smtp_username, smtp_password)
 
-            # Send the email
-            print(f'Start to send the message')
-            server.sendmail(from_email, to_email, message.as_string())
-            server.quit()
-            # If successful, return 0
+    time.sleep(10)
+    print('Wait for 10 sec before login to mail server!')
+    server.login(message['From'], qq_password)
+    print('Successfully log in to qq!')
 
-        # If successful, return 0
-        return 0
+    time.sleep(10)
+    print('Wait for 10 sec before sending the email!')
+    server.sendmail(message['From'], message['To'], msg_body)
+    server.quit()
+    print('Email has been sent!')
 
-    except Exception as e:
-        # If there's an error, return the error message
-        return str(e)
+# def cmd():
+#     for i in range(len(namelist)):
+#         finantial_ratio_file_name = str(namelist[i]) + "_finantial_ratio_"  + timestr + ".csv"
+#         financial_file = get_financial_ratio( finantial_ratio_file_name)
+#         send_mail(financial_file , namelist[i])
+#         print(namelist[i])
+#         i = i + 1
+#         finantial_ratio_file_name = ""
+
 
 def cmd():
-    # Create s3 bucket
-    res = check_bucket_exists(bucket_name)
-    if res:
-        print(f"'{bucket_name}' s3 bucket already exists")
-        pass
-    else:
-        create_bucket(bucket_name, region)
-        print(f"Bucket '{bucket_name}' created successfully.")
-
-    # Create subfolders
-    for folder in subfolders:
-        if check_subfolder_exists(bucket_name, folder):
-            print(f"'{folder}' folder already exists in the '{bucket_name} bucket'")
-            pass
-        else:
-            if create_subfolder(bucket_name, folder):
-                print(f"Subfolder '{folder}' created successfully.")
-            else:
-                print(f"Failed to create subfolder '{folder}'")
+    for j in range(len(namelist)):
+        temp_portfolio_name=(config.get(str(namelist[j]).upper(), namelist[j])).split(',')
+        print("###################Start to print the content of each portfolio#####################")
+        print(temp_portfolio_name)
+        data = create_financial_ratio(temp_portfolio_name)
+        finantial_ratio_file_name = str(namelist[j]) + timestr + ".csv"
+        data.to_csv(finantial_ratio_file_name, index=True, header=True)
+        print("{} has been saved successfully.".format(finantial_ratio_file_name))
+        financial_file = get_financial_ratio(finantial_ratio_file_name)
+        send_mail(financial_file, str(namelist[j]))
 
 def lambda_handler(event, context):
     cmd()
