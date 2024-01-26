@@ -176,7 +176,7 @@ def cmd():
         print("Value of file_path: " , file_path)
         data.to_csv(file_path, index=True, header=True)
         print("{} has been saved successfully.".format(finantial_ratio_file_name))
-        financial_file = get_financial_ratio(finantial_ratio_file_name)
+        financial_file = get_financial_ratio(file_path)
         send_mail(financial_file, str(namelist[j]))
 
 def lambda_handler(event, context):
