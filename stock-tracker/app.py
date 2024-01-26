@@ -25,7 +25,7 @@ end = datetime.today().strftime('%Y-%m-%d')
 qq_password = 'esdrnpzdsscbcajj'
 timestr = time.strftime("%Y-%m-%d")
 finantial_ratio_file_name = "finantial_ratio_" + timestr + ".csv"
-namelist = ['berkshire','chnstock', 'bank','car','chip','it','ecom','energy']
+namelist = ['berkshire']
 
 
 metric = ['P/B',
@@ -71,8 +71,6 @@ def get_fundamental_data(df):
             print (symbol, 'not found')
     return df
 
-
-
 def create_financial_ratio(stocklist, col=metric):
     df = pd.DataFrame(index=stocklist, columns=col)
     df = get_fundamental_data(df)
@@ -91,86 +89,6 @@ def create_financial_ratio(stocklist, col=metric):
     df = df.sort_values(by='Perf YTD', ascending=False)
     print(df)
     return df
-
-def create_financial_ratio_week(stocklist, col=metric):
-    df = pd.DataFrame(index=stocklist, columns=col)
-    df = get_fundamental_data(df)
-
-    #df['Dividend %'] = df['Dividend %'].str.replace('%', '')
-    df['ROE'] = df['ROE'].str.replace('%', '')
-    df['EPS Q/Q'] = df['EPS Q/Q'].str.replace('%', '')
-    df['Insider Own'] = df['Insider Own'].str.replace('%', '')
-    df['Inst Own'] = df['Inst Own'].str.replace('%', '')
-    df['Perf Week'] = df['Perf Week'].str.replace('%', '')
-    df['Perf Month'] = df['Perf Month'].str.replace('%', '')
-    df['Perf Quarter'] = df['Perf Quarter'].str.replace('%', '')
-    df['Perf Half Y'] = df['Perf Half Y'].str.replace('%', '')
-    df['Perf YTD'] = df['Perf YTD'].str.replace('%', '')
-    df['Perf Week'] = df['Perf Week'].astype(float)
-    df = df.sort_values(by='Perf Week', ascending=False)
-    print(df)
-    return df
-
-def create_financial_ratio_month(stocklist, col=metric):
-    df = pd.DataFrame(index=stocklist, columns=col)
-    df = get_fundamental_data(df)
-    df['ROE'] = df['ROE'].str.replace('%', '')
-    df['EPS Q/Q'] = df['EPS Q/Q'].str.replace('%', '')
-    df['Insider Own'] = df['Insider Own'].str.replace('%', '')
-    df['Inst Own'] = df['Inst Own'].str.replace('%', '')
-    df['Perf Week'] = df['Perf Week'].str.replace('%', '')
-    df['Perf Month'] = df['Perf Month'].str.replace('%', '')
-    df['Perf Quarter'] = df['Perf Quarter'].str.replace('%', '')
-    df['Perf Half Y'] = df['Perf Half Y'].str.replace('%', '')
-    df['Perf YTD'] = df['Perf YTD'].str.replace('%', '')
-    df['Perf Month'] = df['Perf Month'].astype(float)
-    df = df.sort_values(by='Perf Month', ascending=False)
-    print(df)
-    return df
-
-def create_financial_ratio_quarter(stocklist, col=metric):
-    df = pd.DataFrame(index=stocklist, columns=col)
-    df = get_fundamental_data(df)
-    df['ROE'] = df['ROE'].str.replace('%', '')
-    df['EPS Q/Q'] = df['EPS Q/Q'].str.replace('%', '')
-    df['Insider Own'] = df['Insider Own'].str.replace('%', '')
-    df['Inst Own'] = df['Inst Own'].str.replace('%', '')
-    df['Perf Week'] = df['Perf Week'].str.replace('%', '')
-    df['Perf Month'] = df['Perf Month'].str.replace('%', '')
-    df['Perf Quarter'] = df['Perf Quarter'].str.replace('%', '')
-    df['Perf Half Y'] = df['Perf Half Y'].str.replace('%', '')
-    df['Perf YTD'] = df['Perf YTD'].str.replace('%', '')
-    df['Perf Quarter'] = df['Perf Quarter'].astype(float)
-    df = df.sort_values(by='Perf Quarter', ascending=False)
-    print(df)
-    return df
-
-def is_sat():
-    flag = 0
-    if date.today().weekday() == 5:
-        print("Today is another Saturday!")
-        return flag
-    else:
-        flag = 1
-        print("Today is not Saturday!")
-        return flag
-
-def is_first_day_of_month():
-    flag = 0
-    today = datetime.now()
-    if today.day == 1:
-        print("It's the first of the month!")
-        return flag
-    elif today.month == 1:
-        flag = 2
-        print("It's the first of the year!")
-        return flag
-    else: 
-        flag = 1
-        print("Today is not the first of the month!")
-        return flag
-
-def is_first_day_of_quarter():
     flag = 0
     today = datetime.now()
     if today.day == 1 and today.month%3 == 1 :
@@ -208,32 +126,32 @@ def get_financial_ratio(f=finantial_ratio_file_name):
     return html
 
 
-def send_mail(body, portfolio_name):
-    message = MIMEMultipart()
-    # message['Subject'] = 'Daily Price Change of My Stock List!'
-    message['Subject'] = 'Daily Fundamental Data of ' + portfolio_name.upper()  + ' Portfolio !'
-    message['From'] = '156709406@qq.com'
-    message['To'] = '156709406@qq.com'
+# def send_mail(body, portfolio_name):
+#     message = MIMEMultipart()
+#     # message['Subject'] = 'Daily Price Change of My Stock List!'
+#     message['Subject'] = 'Daily Fundamental Data of ' + portfolio_name.upper()  + ' Portfolio !'
+#     message['From'] = '156709406@qq.com'
+#     message['To'] = '156709406@qq.com'
 
-    body_content = body
-    message.attach(MIMEText(body_content, "html"))
-    msg_body = message.as_string()
+#     body_content = body
+#     message.attach(MIMEText(body_content, "html"))
+#     msg_body = message.as_string()
 
-    server = SMTP('smtp.qq.com', 587)
-    server.starttls()
-    print('Get connected to qq!')
+#     server = SMTP('smtp.qq.com', 587)
+#     server.starttls()
+#     print('Get connected to qq!')
 
 
-    time.sleep(10)
-    print('Wait for 10 sec before login to mail server!')
-    server.login(message['From'], qq_password)
-    print('Successfully log in to qq!')
+#     time.sleep(10)
+#     print('Wait for 10 sec before login to mail server!')
+#     server.login(message['From'], qq_password)
+#     print('Successfully log in to qq!')
 
-    time.sleep(10)
-    print('Wait for 10 sec before sending the email!')
-    server.sendmail(message['From'], message['To'], msg_body)
-    server.quit()
-    print('Email has been sent!')
+#     time.sleep(10)
+#     print('Wait for 10 sec before sending the email!')
+#     server.sendmail(message['From'], message['To'], msg_body)
+#     server.quit()
+#     print('Email has been sent!')
 
 # def cmd():
 #     for i in range(len(namelist)):
@@ -254,8 +172,8 @@ def cmd():
         finantial_ratio_file_name = str(namelist[j]) + timestr + ".csv"
         data.to_csv(finantial_ratio_file_name, index=True, header=True)
         print("{} has been saved successfully.".format(finantial_ratio_file_name))
-        financial_file = get_financial_ratio(finantial_ratio_file_name)
-        send_mail(financial_file, str(namelist[j]))
+        # financial_file = get_financial_ratio(finantial_ratio_file_name)
+        # send_mail(financial_file, str(namelist[j]))
 
 def lambda_handler(event, context):
     cmd()
