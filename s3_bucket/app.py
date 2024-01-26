@@ -3,8 +3,8 @@ from botocore.exceptions import ClientError
 
 
 # Initialization
-bucket_name = 'sam-s3-bucket-2024'  # Replace with your bucket name
-subfolders = ['predawn-raw-s3', 'predawn-curated-s3', 'predawn-serve-s3']  # List of bucket names to create
+bucket_name = 'sam-transcribe-audio-bucket'  # Replace with your bucket name
+subfolders = ['2024/01', '2024/02', '2024/03']  # List of bucket names to create
 region = 'ap-southeast-2'  # Replace with your desired region
 
 def check_bucket_exists(bucket_name):
