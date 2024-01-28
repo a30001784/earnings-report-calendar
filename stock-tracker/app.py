@@ -148,7 +148,6 @@ def send_mail(body, portfolio_name):
 
     time.sleep(10)
     print('Wait for 10 sec before login to mail server!')
-    print('Our password is: ', qq_password)
     server.login(message['From'], qq_password)
     print('Successfully log in to qq!')
 
@@ -176,11 +175,11 @@ def cmd():
         data = create_financial_ratio(temp_portfolio_name)
         finantial_ratio_file_name = str(namelist[j]) + timestr + ".csv"
         file_path = '/tmp/' + finantial_ratio_file_name
-        print("Value of file_path: " , file_path)
         data.to_csv(file_path, index=True, header=True)
         print("{} has been saved successfully.".format(finantial_ratio_file_name))
         financial_file = get_financial_ratio(file_path)
         send_mail(financial_file, str(namelist[j]))
+        print("###################Job is completed successfully!#####################")
 
 def lambda_handler(event, context):
     cmd()
