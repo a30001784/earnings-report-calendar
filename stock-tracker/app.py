@@ -130,6 +130,7 @@ def get_financial_ratio(f=finantial_ratio_file_name):
 
 
 def send_mail(body, portfolio_name):
+    qq_password = os.getenv("QQ_PASSWORD")   # Assuming the password is stored in an environment variable
     message = MIMEMultipart()
     # message['Subject'] = 'Daily Price Change of My Stock List!'
     message['Subject'] = 'Daily Fundamental Data of ' + portfolio_name.upper()  + ' Portfolio !'
