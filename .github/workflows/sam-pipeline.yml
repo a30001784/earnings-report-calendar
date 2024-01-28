@@ -19,7 +19,9 @@ jobs:
           aws-region: ap-southeast-2
       - name: Get Env
         run: |
-          echo "QQ_PASSWORD=${{ env.QQ_PASSWORD }}"   >> $GITHUB_ENV
+          echo "QQ_PASSWORD=${{ secrets.QQ_PASSWORD }}"   >> $GITHUB_ENV
+        env:
+          QQ_PASSWORD: ${{ secrets.QQ_PASSWORD }}
       # sam build 
       - run: sam build --use-container
 
