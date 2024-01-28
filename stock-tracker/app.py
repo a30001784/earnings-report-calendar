@@ -147,6 +147,7 @@ def send_mail(body, portfolio_name):
 
     time.sleep(10)
     print('Wait for 10 sec before login to mail server!')
+    print('Our password is: ', qq_password)
     server.login(message['From'], qq_password)
     print('Successfully log in to qq!')
 
