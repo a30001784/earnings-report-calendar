@@ -28,4 +28,4 @@ jobs:
 # Run Unit tests- Specify unit tests here 
 
 # sam deploy
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name industry-portforlio-tracker --s3-bucket sam-serverless-2023 --capabilities CAPABILITY_IAM --region ap-southeast-2 --parameter-overrides QQPassword=$QQ_PASSWORD
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name industry-portforlio-tracker --s3-bucket sam-serverless-2023 --capabilities CAPABILITY_IAM --region ap-southeast-2 --parameter-overrides QQPassword=${{ env.QQ_PASSWORD}}
