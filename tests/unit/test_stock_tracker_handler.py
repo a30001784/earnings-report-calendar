@@ -21,10 +21,16 @@ if running_locally:
 else:
     lambda_client = boto3.client('lambda')
 
+# Test data payload for your Lambda function
+test_payload = {
+    # Add your test data here
+}
 
 # Invoke your Lambda function as you normally usually do. The function will run
 # locally if it is configured to do so
-response = lambda_client.invoke(FunctionName="industry-portforlio-tracker-StockTrackerFunction-5llsCIhXUmaN")
+response = lambda_client.invoke(FunctionName="industry-portforlio-tracker-StockTrackerFunction-5llsCIhXUmaN", test_payload)
+
+
 
 # Verify the response
 assert response == "has been saved successfully!"
