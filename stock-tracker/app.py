@@ -15,6 +15,7 @@ import yfinance as yf
 from datetime import datetime, timedelta, date
 import numpy as np
 import configparser
+import os
 
 CONFIG_FILE = './config.ini'
 config = configparser.ConfigParser()
@@ -22,10 +23,10 @@ config.read(CONFIG_FILE)
 start = datetime.now() - timedelta(days=10)
 start.strftime('%Y-%m-%d')
 end = datetime.today().strftime('%Y-%m-%d')
-qq_password = 'esdrnpzdsscbcajj'
+qq_password = os.getenv('QQ_PASSWORD')
 timestr = time.strftime("%Y-%m-%d")
 finantial_ratio_file_name = "finantial_ratio_" + timestr + ".csv"
-namelist = ['chip']
+namelist = ['chip','energy']
 
 
 metric = ['P/B',
