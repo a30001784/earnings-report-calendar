@@ -16,4 +16,3 @@ pandas_datareader
 yahoo_earnings_calendar
 yahoo_fin
 yfinance
-os
