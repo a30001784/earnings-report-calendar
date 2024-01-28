@@ -23,6 +23,7 @@ config.read(CONFIG_FILE)
 start = datetime.now() - timedelta(days=10)
 start.strftime('%Y-%m-%d')
 end = datetime.today().strftime('%Y-%m-%d')
+qq_password = os.environ['qq_password']
 timestr = time.strftime("%Y-%m-%d")
 finantial_ratio_file_name = "finantial_ratio_" + timestr + ".csv"
 namelist = ['chip']
