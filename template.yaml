@@ -25,6 +25,7 @@ Resources:
       CodeUri: stock-tracker/
       Handler: app.lambda_handler
       Runtime: python3.9
+      MemorySize: 512  # Memory allocation in MB
       Environment:
         Variables:
           QQ_PASSWORD: !Ref QQPASSWORD
