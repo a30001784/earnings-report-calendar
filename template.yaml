@@ -5,6 +5,11 @@ Description: >
 
   Sample SAM Template for industry-portfolio-tracker
 
+Parameters:
+  QQPASSWORD:
+    Type: String
+    Description: A sensitive environment variable, like a password
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -22,7 +27,7 @@ Resources:
       Runtime: python3.9
       Environment:
         Variables:
-          QQ_PASSWORD: $QQPASSWORD
+          QQ_PASSWORD: !Ref QQPASSWORD
       Architectures:
       - x86_64
       Events:
