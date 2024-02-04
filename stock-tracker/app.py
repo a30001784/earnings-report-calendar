@@ -26,7 +26,7 @@ end = datetime.today().strftime('%Y-%m-%d')
 qq_password = os.getenv("QQ_PASSWORD")   # Assuming the password is stored in an environment variable
 timestr = time.strftime("%Y-%m-%d")
 finantial_ratio_file_name = "finantial_ratio_" + timestr + ".csv"
-namelist = ['bank','berkshire','chip','car']
+namelist = ['chnstock','bank','berkshire','chip','car','cryptocoin','ecom','medicine','energy','it']
 
 
 metric = ['P/B',

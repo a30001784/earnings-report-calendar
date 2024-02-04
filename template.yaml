@@ -26,6 +26,7 @@ Resources:
       Handler: app.lambda_handler
       Runtime: python3.9
       MemorySize: 512  # Memory allocation in MB
+      Timeout: 600     # Execution time in 10 minutes
       Environment:
         Variables:
           QQ_PASSWORD: !Ref QQPASSWORD
