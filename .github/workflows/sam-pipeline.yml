@@ -19,13 +19,13 @@ jobs:
           aws-region: ap-southeast-2
       - name: Get Env
         run: |
-          echo "QQ_PASSWORD=${{ secrets.QQ_PASSWORD }}"   >> $GITHUB_ENV
+          echo "API_KEY=${{ secrets.API_KEY }}"   >> $GITHUB_ENV
         env:
-          QQ_PASSWORD: ${{ secrets.QQ_PASSWORD }}
+          API_KEY: ${{ secrets.API_KEY }}
       # sam build 
       - run: sam build --use-container
 
 # Run Unit tests- Specify unit tests here 
 
 # sam deploy
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name industry-portforlio-tracker --s3-bucket sam-serverless-2023 --capabilities CAPABILITY_IAM --region ap-southeast-2 --parameter-overrides QQPASSWORD=$QQ_PASSWORD
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name industry-portforlio-tracker --s3-bucket sam-serverless-2023 --capabilities CAPABILITY_IAM --region ap-southeast-2 --parameter-overrides APIKEY=$API_KEY

@@ -6,7 +6,7 @@ Description: >
   Sample SAM Template for industry-portfolio-tracker
 
 Parameters:
-  QQPASSWORD:
+  APIKEY:
     Type: String
     Description: A sensitive environment variable, like a password
 
@@ -19,17 +19,17 @@ Globals:
   Api:
     TracingEnabled: true
 Resources:
-  StockTrackerFunction:
+  EarningsReportFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: stock-tracker/
+      CodeUri: earnings_report/
       Handler: app.lambda_handler
       Runtime: python3.9
       MemorySize: 512  # Memory allocation in MB
       Timeout: 600     # Execution time in 10 minutes
       Environment:
         Variables:
-          QQ_PASSWORD: !Ref QQPASSWORD
+          API_KEY: !Ref APIKEY
       Architectures:
       - x86_64
       Events:
@@ -40,8 +40,8 @@ Resources:
         CWSchedule:
           Type: Schedule
           Properties:
-            Schedule: 'rate(1 day)'
-            Name: stock-tracker-schedule
+            Schedule: 'rate(7 days)'
+            Name: earnings-report-calendar-schedule
             Description: trigger portfolio tracker lambda function on a weekly basis
             State: ENABLED
 
@@ -66,9 +66,9 @@ Outputs:
   # S3CreationApi:
   #   Description: API Gateway endpoint URL for Prod stage for Bitcoin Account Balance function
   #   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/account/"
-  StockTrackerFunction:
+  EarningsReportFunction:
     Description: AWS S3 bucket creation Lambda Function ARN
-    Value: !GetAtt StockTrackerFunction.Arn
-  StockTrackerIamRole:
+    Value: !GetAtt EarningsReportFunction.Arn
+  EarningsReportIamRole:
     Description: Implicit IAM Role created for Creating S3 bucket function
-    Value: !GetAtt StockTrackerFunctionRole.Arn
+    Value: !GetAtt EarningsReportFunctionRole.Arn
