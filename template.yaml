@@ -9,6 +9,9 @@ Parameters:
   APIKEY:
     Type: String
     Description: A sensitive environment variable, like a password
+  QQPASSWORD:
+    Type: String
+    Description: A sensitive environment variable, like a password
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -30,6 +33,7 @@ Resources:
       Environment:
         Variables:
           API_KEY: !Ref APIKEY
+          QQ_PASSWORD: !Ref QQPASSWORD
       Architectures:
       - x86_64
       Events:
