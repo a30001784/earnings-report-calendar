@@ -2,13 +2,21 @@
 import pandas as pd
 import requests
 import csv
+from datetime import datetime, timedelta, date
+import time
 import os
+import configparser
 
+CONFIG_FILE = './config.ini'
+config = configparser.ConfigParser()
+config.read(CONFIG_FILE)
 symbols = ['TSLA','AAPL','AMD','ARM','AMZN','MSFT','META','GOOGL','NIO','SNAP','OPEN','NFLX','NVDA']  # Add more symbols as needed
 qq_password = os.getenv("QQ_PASSWORD") 
 api_key = os.getenv("API_KEY") 
 horizon = "3month"
+timestr = time.strftime("%Y-%m-%d")
 earnings_report_file_path = "earnings_report_" + timestr + ".csv"
+namelist = ['symbols']
 
 def get_earnings_date():
     data = []
@@ -41,9 +49,7 @@ def get_earnings_date():
     output_file_path = "/tmp/calendar_data.csv"
     df.to_csv(output_file_path, index=False)
 
-
-
-def get_financial_ratio(f=finantial_ratio_file_name):
+def get_financial_ratio(f=earnings_report_file_path):
     # data = web.DataReader(stocks, 'yahoo', start, end)[col]
     # data = pdr.get_data_yahoo(stocks, 'yahoo', start,end)[col]
     try:
@@ -98,13 +104,11 @@ def cmd():
         temp_portfolio_name=(config.get(str(namelist[j]).upper(), namelist[j])).split(',')
         print("###################Start to print the content of each portfolio#####################")
         print(temp_portfolio_name)
-        data = create_financial_ratio(temp_portfolio_name)
-        finantial_ratio_file_name = str(namelist[j]) + timestr + ".csv"
-        file_path = '/tmp/' + earnings_report_file_path
-        data.to_csv(file_path, index=True, header=True)
-        print("{} has been saved successfully.".format(finantial_ratio_file_name))
-        financial_file = get_financial_ratio(file_path)
-        send_mail(financial_file, str(namelist[j]))
+        print("###################Start to generate earnings report release date#####################")
+        get_earnings_date()
+        # print("{} has been saved successfully.".format(finantial_ratio_file_name))
+        # financial_file = get_financial_ratio(file_path)
+        # send_mail(financial_file, str(namelist[j]))
         print("###################Job is completed successfully!#####################")
 
 def lambda_handler(event, context):
