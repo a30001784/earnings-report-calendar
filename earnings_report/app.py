@@ -2,8 +2,11 @@
 import pandas as pd
 import requests
 import csv
+import os
 
 symbols = ['TSLA','AAPL','AMD','ARM','AMZN','MSFT','META','GOOGL','NIO','SNAP','OPEN','NFLX','NVDA']  # Add more symbols as needed
+qq_password = os.getenv("QQ_PASSWORD") 
+api_key = os.getenv("API_KEY") 
 horizon = "3month"
 earnings_report_file_path = "earnings_report_" + timestr + ".csv"
 
