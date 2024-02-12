@@ -5,6 +5,10 @@ import csv
 from datetime import datetime, timedelta, date
 import time
 import os
+import numpy as np
+from smtplib import SMTP
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import configparser
 
 CONFIG_FILE = './config.ini'
@@ -54,10 +58,19 @@ def formate_report(f=earnings_report_file_path):
     # data = pdr.get_data_yahoo(stocks, 'yahoo', start,end)[col]
     try:
         df = pd.read_csv(f)
-        data = df.drop("Symbol", axis=1)
+        df = df.drop("Symbol", axis=1)
+        df = df.sort_values(by='reportDate')
+
+        ############ add a new column of days in difference ############
+        df['reportDate'] = pd.to_datetime(df['reportDate'])
+        df['days_difference'] = (df['reportDate'] - today ).dt.days
+
+        data = df.sort_values(by='reportDate')
         print(data.to_string())
+
     except:
         print('did not find data! ')
+
     round_data = np.round(data, decimals=2)
     html = """\
     <html>
