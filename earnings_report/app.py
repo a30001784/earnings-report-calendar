@@ -19,6 +19,7 @@ qq_password = os.getenv("QQ_PASSWORD")
 api_key = os.getenv("API_KEY") 
 horizon = "3month"
 timestr = time.strftime("%Y-%m-%d")
+today = datetime.today()
 earnings_report_file_path = "/tmp/" + "earnings_report_" + timestr + ".csv"
 namelist = ['symbols']
 
