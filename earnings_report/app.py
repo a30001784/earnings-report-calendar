@@ -14,14 +14,14 @@ import configparser
 CONFIG_FILE = './config.ini'
 config = configparser.ConfigParser()
 config.read(CONFIG_FILE)
-# symbols = ['TSLA','AAPL','AMD','ARM','AMZN','MSFT','META','GOOGL','NIO','SNAP','OPEN','NFLX','NVDA']  # Add more symbols as needed
+symbols = ['TSLA','AAPL','AMD','ARM','AMZN','MSFT','META','GOOGL','NIO','SNAP','OPEN','NFLX','NVDA']  # Add more symbols as needed
 qq_password = os.getenv("QQ_PASSWORD") 
 api_key = os.getenv("API_KEY") 
 horizon = "3month"
 timestr = time.strftime("%Y-%m-%d")
 today = datetime.today()
 earnings_report_file_path = "/tmp/" + "earnings_report_" + timestr + ".csv"
-namelist = ['symbols']
+# namelist = ['symbols']
 
 def get_earnings_date():
     data = []
@@ -54,7 +54,7 @@ def get_earnings_date():
     output_file_path = "./calendar_data.csv"
     df.to_csv(output_file_path, index=False)
 
-def formate_report(f=earnings_report_file_path):
+def format_report(f=earnings_report_file_path):
     # data = web.DataReader(stocks, 'yahoo', start, end)[col]
     # data = pdr.get_data_yahoo(stocks, 'yahoo', start,end)[col]
     try:
@@ -84,7 +84,7 @@ def formate_report(f=earnings_report_file_path):
     print(html)
     return html
 
-def send_mail(body, portfolio_name):
+def send_mail(body):
     message = MIMEMultipart()
     # message['Subject'] = 'Daily Price Change of My Stock List!'
     message['Subject'] = 'Earnings Report Calendar!'
@@ -113,13 +113,10 @@ def send_mail(body, portfolio_name):
 
 
 def cmd():
-    for j in range(len(namelist)):
-        temp_portfolio_name=(config.get(str(namelist[j]).upper(), namelist[j])).split(',')
-        print("###################Start to print the content of each portfolio#####################")
-        print(temp_portfolio_name)
         print("###################Start to generate earnings report release date#####################")
-        calendar_file = formate_report()
-        send_mail(calendar_file, str(namelist[j]))
+        get_earnings_date()
+        calendar_file = format_report()
+        send_mail(calendar_file)
         print("###################Job is completed successfully!#####################")
 
 def lambda_handler(event, context):
