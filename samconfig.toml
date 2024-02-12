@@ -4,7 +4,7 @@ version = 0.1
 
 [default]
 [default.global.parameters]
-stack_name = "industry-portfolio-tracker"
+stack_name = "earnings-report-calendar"
 
 [default.build.parameters]
 cached = true

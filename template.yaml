@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  industry-portfolio-tracker
+  earnings-report-calendar
 
-  Sample SAM Template for industry-portfolio-tracker
+  Sample SAM Template for earnings-report-calendar
 
 Parameters:
   APIKEY:
