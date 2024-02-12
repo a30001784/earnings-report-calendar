@@ -20,7 +20,7 @@ api_key = os.getenv("API_KEY")
 horizon = "3month"
 timestr = time.strftime("%Y-%m-%d")
 today = datetime.today()
-earnings_report_file_path = "/tmp/" + "earnings_report_" + timestr + ".csv"
+output_file_path = "/tmp/" + "earnings_report_" + timestr + ".csv"
 # namelist = ['symbols']
 
 def get_earnings_date():
@@ -51,10 +51,10 @@ def get_earnings_date():
     df = df.dropna(subset=['reportDate'])
 
     # Save the DataFrame to a CSV file
-    output_file_path = "./calendar_data.csv"
+    # output_file_path = "./calendar_data.csv"
     df.to_csv(output_file_path, index=False)
 
-def format_report(f=earnings_report_file_path):
+def format_report(f=output_file_path):
     # data = web.DataReader(stocks, 'yahoo', start, end)[col]
     # data = pdr.get_data_yahoo(stocks, 'yahoo', start,end)[col]
     try:
