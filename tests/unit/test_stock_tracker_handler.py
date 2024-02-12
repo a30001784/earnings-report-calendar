@@ -28,7 +28,7 @@ test_payload = {
 
 # Invoke your Lambda function as you normally usually do. The function will run
 # locally if it is configured to do so
-response = lambda_client.invoke(FunctionName="industry-portforlio-tracker-StockTrackerFunction-5llsCIhXUmaN", test_payload)
+response = lambda_client.invoke(FunctionName="earnings-report-calendarer-StockTrackerFunction-5llsCIhXUmaN", test_payload)
 
 
 
