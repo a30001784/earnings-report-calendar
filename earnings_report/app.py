@@ -10,12 +10,12 @@ import configparser
 CONFIG_FILE = './config.ini'
 config = configparser.ConfigParser()
 config.read(CONFIG_FILE)
-symbols = ['TSLA','AAPL','AMD','ARM','AMZN','MSFT','META','GOOGL','NIO','SNAP','OPEN','NFLX','NVDA']  # Add more symbols as needed
+# symbols = ['TSLA','AAPL','AMD','ARM','AMZN','MSFT','META','GOOGL','NIO','SNAP','OPEN','NFLX','NVDA']  # Add more symbols as needed
 qq_password = os.getenv("QQ_PASSWORD") 
 api_key = os.getenv("API_KEY") 
 horizon = "3month"
 timestr = time.strftime("%Y-%m-%d")
-earnings_report_file_path = "earnings_report_" + timestr + ".csv"
+earnings_report_file_path = "/tmp/" + "earnings_report_" + timestr + ".csv"
 namelist = ['symbols']
 
 def get_earnings_date():
@@ -46,14 +46,15 @@ def get_earnings_date():
     df = df.dropna(subset=['reportDate'])
 
     # Save the DataFrame to a CSV file
-    output_file_path = "/tmp/calendar_data.csv"
+    output_file_path = "./calendar_data.csv"
     df.to_csv(output_file_path, index=False)
 
-def get_financial_ratio(f=earnings_report_file_path):
+def formate_report(f=earnings_report_file_path):
     # data = web.DataReader(stocks, 'yahoo', start, end)[col]
     # data = pdr.get_data_yahoo(stocks, 'yahoo', start,end)[col]
     try:
-        data = pd.read_csv(f)
+        df = pd.read_csv(f)
+        data = df.drop("Symbol", axis=1)
         print(data.to_string())
     except:
         print('did not find data! ')
@@ -69,12 +70,10 @@ def get_financial_ratio(f=earnings_report_file_path):
     print(html)
     return html
 
-
 def send_mail(body, portfolio_name):
-    qq_password = os.getenv("QQ_PASSWORD")   # Assuming the password is stored in an environment variable
     message = MIMEMultipart()
     # message['Subject'] = 'Daily Price Change of My Stock List!'
-    message['Subject'] = 'Daily Fundamental Data of ' + portfolio_name.upper()  + ' Portfolio !'
+    message['Subject'] = 'Earnings Report Calendar!'
     message['From'] = '156709406@qq.com'
     message['To'] = '156709406@qq.com'
 
@@ -105,10 +104,8 @@ def cmd():
         print("###################Start to print the content of each portfolio#####################")
         print(temp_portfolio_name)
         print("###################Start to generate earnings report release date#####################")
-        get_earnings_date()
-        # print("{} has been saved successfully.".format(finantial_ratio_file_name))
-        # financial_file = get_financial_ratio(file_path)
-        # send_mail(financial_file, str(namelist[j]))
+        calendar_file = formate_report()
+        send_mail(calendar_file, str(namelist[j]))
         print("###################Job is completed successfully!#####################")
 
 def lambda_handler(event, context):
