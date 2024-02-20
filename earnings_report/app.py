@@ -14,7 +14,9 @@ import configparser
 CONFIG_FILE = './config.ini'
 config = configparser.ConfigParser()
 config.read(CONFIG_FILE)
-symbols = ['TSLA','AAPL','AMD','ARM','AMZN','MSFT','META','GOOGL','NIO','SNAP','OPEN','NFLX','NVDA']  # Add more symbols as needed
+symbols = ['TSLA','AAPL','ABNB','AMD','ARM','AMZN',\
+           'CVNA','COIN','LCID','LYFT','MSFT','META','GOOGL','NIO',\
+           'RVN','ROKU','SNAP','SQ','OPEN','PANW','NFLX','NVDA']  # Add more symbols as needed
 qq_password = os.getenv("QQ_PASSWORD") 
 api_key = os.getenv("API_KEY") 
 horizon = "3month"
