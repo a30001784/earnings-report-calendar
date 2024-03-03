@@ -15,8 +15,8 @@ CONFIG_FILE = './config.ini'
 config = configparser.ConfigParser()
 config.read(CONFIG_FILE)
 symbols = ['TSLA','AAPL','ABNB','AMD','ARM','AMZN',\
-           'CVNA','COIN','COST','CRWD','LCID','LYFT','FROG',\
-           'MSFT','META','GOOGL','JD','NIO','NFLX','NVDA','PDD',\
+           'CVNA','COIN','COST','LCID','LYFT','FROG',\
+           'MSFT','META','GOOGL','NIO','NFLX','NVDA','PDD',\
            'RVN','ROKU','SNAP','SQ','SNOW','TEAM','OPEN','PANW']  # Add more symbols as needed
 qq_password = os.getenv("QQ_PASSWORD") 
 api_key = os.getenv("API_KEY") 
